@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">Lab2_kthienem</string>
+
+    <!-- Main Activity -->
+    <string name="main_text">Lab 2</string>
+
+    <!-- Splash Screen -->
+    <string name="nd_text">Notre Dame IN</string>
+    <string name="sub_text">Basketball 2017</string>
+</resources>
