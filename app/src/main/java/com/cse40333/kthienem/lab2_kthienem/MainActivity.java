@@ -11,15 +11,13 @@ import java.util.Arrays;
 
 public class MainActivity extends AppCompatActivity {
 
-//    private String[] teamNames = {"Ohio State", "Florida State", "Wake Forest", "Boston College",
-//            "North Carolina State", "Georgia Tech", "North Virginia", "Chicago State"};
     private ArrayList<String[]> info = new ArrayList<String[]>(){{
             String[] schools = {"Ohio State", "Florida State", "Wake Forest", "Boston College",
             "North Carolina State", "Georgia Tech", "North Virginia", "Chicago State"};
 
             String[] dates = {"Feb 9", "Feb 11", "Feb 12", "Feb 14", "Feb 18", "Feb 26", "March 4", "March 8"};
 
-            String[] logos = {"ohio_state","fsu","wake_forest","boston_college","ncstate","georgia_tech","virginia","michigan"};
+            String[] logos = {"ohio_state","fsu","wake_forest","boston_college","ncstate","georgia_tech","virginia","fsu"};
 
             for (int i = 0; i < schools.length; i++) {
                 String[] temp = {schools[i], dates[i], logos[i]};
