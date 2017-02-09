@@ -7,4 +7,6 @@
     <!-- Splash Screen -->
     <string name="nd_text">Notre Dame IN</string>
     <string name="sub_text">Basketball 2017</string>
+    <string name="default_team_name">Team Name</string>
+    <string name="default_date">Game Date</string>
 </resources>
