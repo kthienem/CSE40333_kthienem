@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <TextView
+        android:text="@string/game_date_default"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/date" />
+
+    <TextView
+        android:text="@string/game_location_default"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:id="@+id/location" />
+
+    <RelativeLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:srcCompat="@mipmap/ic_launcher"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginEnd="@dimen/team_logo_margin"
+            android:id="@+id/team1Logo" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:srcCompat="@mipmap/ic_launcher"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="@dimen/team_logo_margin"
+            android:id="@+id/team2Logo" />
+
+        <TextView
+            android:text="@string/school_default"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_toEndOf="@+id/team1Logo"
+            android:maxWidth="100dp"
+            android:id="@+id/team1School" />
+
+        <TextView
+            android:text="@string/team_name_default"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/team1School"
+            android:layout_toEndOf="@+id/team1Logo"
+            android:maxWidth="100dp"
+            android:id="@+id/team1Name" />
+
+        <TextView
+            android:text="@string/team_record_default"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/team1Name"
+            android:layout_toEndOf="@+id/team1Logo"
+            android:maxWidth="100dp"
+            android:id="@+id/team1Record" />
+
+        <TextView
+            android:text="@string/school_default"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_toStartOf="@+id/team2Logo"
+            android:maxWidth="100dp"
+            android:id="@+id/team2School" />
+
+        <TextView
+            android:text="@string/team_name_default"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/team2School"
+            android:layout_toStartOf="@+id/team2Logo"
+            android:maxWidth="100dp"
+            android:id="@+id/team2Name" />
+
+        <TextView
+            android:text="@string/team_record_default"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/team2Name"
+            android:layout_toStartOf="@+id/team2Logo"
+            android:maxWidth="100dp"
+            android:id="@+id/team2Record" />
+
+        <TextView
+            android:text="@string/team_score_default"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toStartOf="@+id/scoreSeparator"
+            android:id="@+id/team1Score" />
+
+        <TextView
+            android:text="@string/score_spacer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:id="@+id/scoreSeparator"/>
+
+        <TextView
+            android:text="@string/team_score_default"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@+id/scoreSeparator"
+            android:id="@+id/team2Score"/>
+
+        <TextView
+            android:text="@string/game_time_default"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/scoreSeparator"
+            android:layout_centerHorizontal="true"
+            android:id="@+id/gameTime"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <Button
+            android:text="@string/camera_button_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/cameraButton"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true" />
+    </RelativeLayout>
+
+    <!--<TableLayout-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent">-->
+
+        <!--<TableRow-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent" />-->
+
+        <!--<TableRow-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent" />-->
+
+        <!--<TableRow-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent" />-->
+    <!--</TableLayout>-->
+
+</LinearLayout>

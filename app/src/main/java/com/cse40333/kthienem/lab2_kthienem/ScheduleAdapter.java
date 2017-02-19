@@ -21,6 +21,7 @@ public class ScheduleAdapter extends ArrayAdapter<String[]> {
         super(context, R.layout.schedule_item, schedule);
     }
 
+    @Override
     public View getView (int position, View convertView, ViewGroup parent) {
         LayoutInflater scheduleInflater = LayoutInflater.from(getContext());
         View scheduleView = scheduleInflater.inflate(R.layout.schedule_item, parent, false);

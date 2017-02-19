@@ -9,4 +9,15 @@
     <string name="sub_text">Basketball 2017</string>
     <string name="default_team_name">Team Name</string>
     <string name="default_date">Game Date</string>
+
+    <!-- Detail Activity -->
+    <string name="game_date_default">Game Date</string>
+    <string name="game_location_default">Game Location</string>
+    <string name="school_default">Team School</string>
+    <string name="team_name_default">Team Name</string>
+    <string name="team_record_default">(0 - 0)</string>
+    <string name="team_score_default">0</string>
+    <string name="score_spacer"> - </string>
+    <string name="game_time_default">Final</string>
+    <string name="camera_button_text">Camera</string>
 </resources>
