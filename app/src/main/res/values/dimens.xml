@@ -13,4 +13,5 @@
 
     <!-- Detail Activity -->
     <dimen name="team_logo_margin">10dp</dimen>
+    <dimen name="camera_button_bottom_margin">40dp</dimen>
 </resources>
