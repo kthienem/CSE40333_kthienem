@@ -13,23 +13,11 @@ import java.util.Random;
 
 public class MainActivity extends AppCompatActivity {
 
-    private String[] schools = {"Ohio State", "Florida State", "Wake Forest", "Boston College",
-            "North Carolina State", "Georgia Tech", "North Virginia", "Chicago State"};
-    private String[] teams = {"Buckeyes", "Seminoles", "Demon Deacons", "Eagles", "Wolf Pack", "Yellow Jackets", "Cavaliers", "Cougars"};
-    private String[] dates = {"Feb 9", "Feb 11", "Feb 12", "Feb 14", "Feb 18", "Feb 26", "March 4", "March 8"};
-    private String[] logos = {"ohio_state","fsu","wake_forest","boston_college","ncstate","georgia_tech","virginia","fsu"};
     private ArrayList<String> homeScore = new ArrayList<>();
     private ArrayList<String> awayScore = new ArrayList<>();
-    private ArrayList<String> records = new ArrayList<>();
-    private ArrayList<String> times = new ArrayList<>();
-    private ArrayList<String> locations = new ArrayList<>();
+    private Team ND = new Team("Fighting Irish", "notre_dame", "March 1", "Notre Dame", "(21-5)");
 
-    private ArrayList<String[]> info = new ArrayList<String[]>(){{
-        for (int i = 0; i < schools.length; i++) {
-            String[] temp = {schools[i], dates[i], logos[i]};
-            add(temp);
-        }
-    }};
+    private ArrayList<Team> info = new ArrayList<>();
     private ListAdapter scheduleAdapter;
     private ListView scheduleListView;
 
@@ -39,29 +27,26 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         setTitle("Schedule");
 
+        MyCsvFileReader reader = new MyCsvFileReader(getApplicationContext());
+        info = reader.readCsvFile(R.raw.schedule);
+
         scheduleAdapter = new ScheduleAdapter(this, info);
         scheduleListView = (ListView) findViewById(R.id.scheduleListView);
         scheduleListView.setAdapter(scheduleAdapter);
 
         Random r = new Random();
-        for (int i = 0; i < schools.length; i++) {
+        for (int i = 0; i < info.size(); i++) {
             int temp = r.nextInt(100);
             homeScore.add(Integer.toString(temp));
 
             temp = r.nextInt(100);
             awayScore.add(Integer.toString(temp));
-
-            int win = r.nextInt(27);
-            int lose = 27 - win;
-            records.add("(" + Integer.toString(win) + "-" + Integer.toString(lose) + ")");
         }
 
         AdapterView.OnItemClickListener itemClickListener = new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Bundle bundle = new Bundle();
-                bundle = addInfoToBundle(i);
-//                bundle.putString("team1School", schools[i]);
+                Bundle bundle = addInfoToBundle(i);
 
                 Intent intent = new Intent(getApplicationContext(), DetailActivity.class);
                 intent.putExtras(bundle);
@@ -75,14 +60,13 @@ public class MainActivity extends AppCompatActivity {
     private Bundle addInfoToBundle(int id) {
         Bundle mBundle = new Bundle();
 
-        String[] team1 = {schools[id], teams[id], records.get(id), homeScore.get(id), logos[id]};
-        String[] team2 = {"Notre Dame", "Fighting Irish", "(21-5)", "78", "notre_dame"};
+        mBundle.putSerializable("team1", info.get(id));
+        mBundle.putSerializable("team2", ND);
 
-        mBundle.putStringArray("team1", team1);
-        mBundle.putStringArray("team2", team2);
-
-        mBundle.putString("date", "Saturday, " + dates[id] + ", 6:00 PM" );
+        mBundle.putString("date", "Saturday, " + info.get(id).getGameDate() + ", 6:00 PM" );
         mBundle.putString("location", "Purcell Pavilion at the Joyce Center, Notre Dame, Indiana");
+        mBundle.putString("score1", awayScore.get(id));
+        mBundle.putString("score2", homeScore.get(id));
 
         return mBundle;
     }

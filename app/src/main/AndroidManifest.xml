@@ -17,6 +17,17 @@
         </activity>
         <activity android:name=".MainActivity"/>
         <activity android:name=".DetailActivity"/>
+
+        <provider
+            android:authorities="com.cse40333.kthienem.lab2_kthienem.fileprovider"
+            android:name="android.support.v4.content.FileProvider"
+            android:grantUriPermissions="true"
+            android:exported="false">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/filepaths"/>
+
+        </provider>
     </application>
 
 </manifest>

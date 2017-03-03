@@ -2,13 +2,27 @@ package com.cse40333.kthienem.lab2_kthienem;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.media.Image;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.ContactsContract;
 import android.provider.MediaStore;
+import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * Created by Kris on 2/15/2017.
@@ -16,7 +30,8 @@ import android.widget.TextView;
 
 public class DetailActivity extends AppCompatActivity {
 
-    private Button cameraButton;
+    private static final int CAMERA_REQUEST = 1888;
+    private String pictureName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,11 +43,14 @@ public class DetailActivity extends AppCompatActivity {
         Bundle bundle = intent.getExtras();
 
         //Set info of team 1
-        String[] team1Info = bundle.getStringArray("team1");
-        setTeam1Info(team1Info);
+        Team team1Info = (Team) bundle.getSerializable("team1");
+        String team1Score = bundle.getString("score1");
+        setTeam1Info(team1Info, team1Score);
 
-        String[] team2Info = bundle.getStringArray("team2");
-        setTeam2Info(team2Info);
+        //Set info of team 2
+        Team team2Info = (Team) bundle.getSerializable("team2");
+        String team2Score = bundle.getString("score2");
+        setTeam2Info(team2Info, team2Score);
 
         TextView date = (TextView) findViewById(R.id.date);
         date.setText(bundle.getString("date"));
@@ -44,49 +62,85 @@ public class DetailActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                startActivity(cameraIntent);
+
+                File imagePath = new File(getFilesDir(), "images");
+                imagePath.mkdir();
+                pictureName = getPictureName();
+                File imageFile = new File(imagePath, pictureName);
+                Uri contentUri = FileProvider.getUriForFile(getApplicationContext(), "com.cse40333.kthienem.lab2_kthienem.fileprovider", imageFile);
+                getApplicationContext().grantUriPermission(getPackageName(), contentUri, Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+
+                cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, contentUri);
+                getApplicationContext().grantUriPermission("com.cse40333.kthienem.lab2_kthienem", contentUri, Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+                startActivityForResult(cameraIntent, CAMERA_REQUEST);
             }
         };
 
-        cameraButton = (Button) findViewById(R.id.cameraButton);
+        Button cameraButton = (Button) findViewById(R.id.cameraButton);
         cameraButton.setOnClickListener(cameraButtonClickListener);
     }
 
-    private void setTeam1Info(String[] info) {
+    private void setTeam1Info(Team info, String mScore) {
         TextView school = (TextView) findViewById(R.id.team1School);
-        school.setText(info[0]);
+        school.setText(info.getSchoolName());
 
         TextView team = (TextView) findViewById(R.id.team1Name);
-        team.setText(info[1]);
+        team.setText(info.getTeamName());
 
         TextView record = (TextView) findViewById(R.id.team1Record);
-        record.setText(info[2]);
+        record.setText(info.getRecord());
 
         TextView score = (TextView) findViewById(R.id.team1Score);
-        score.setText(info[3]);
+        score.setText(mScore);
 
         ImageView logo = (ImageView) findViewById(R.id.team1Logo);
-        String mDrawableName = info[4];
+        String mDrawableName = info.getTeamLogo();
         int resID = getApplicationContext().getResources().getIdentifier(mDrawableName, "drawable", getApplicationContext().getPackageName());
         logo.setImageResource(resID);
     }
 
-    private void setTeam2Info(String[] info) {
+    private void setTeam2Info(Team info, String mScore) {
         TextView school = (TextView) findViewById(R.id.team2School);
-        school.setText(info[0]);
+        school.setText(info.getSchoolName());
 
         TextView team = (TextView) findViewById(R.id.team2Name);
-        team.setText(info[1]);
+        team.setText(info.getTeamName());
 
         TextView record = (TextView) findViewById(R.id.team2Record);
-        record.setText(info[2]);
+        record.setText(info.getRecord());
 
         TextView score = (TextView) findViewById(R.id.team2Score);
-        score.setText(info[3]);
+        score.setText(mScore);
 
         ImageView logo = (ImageView) findViewById(R.id.team2Logo);
-        String mDrawableName = info[4];
+        String mDrawableName = info.getTeamLogo();
         int resID = getApplicationContext().getResources().getIdentifier(mDrawableName, "drawable", getApplicationContext().getPackageName());
         logo.setImageResource(resID);
+    }
+
+    private String getPictureName() {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd_HHmmss");
+        String timestamp = sdf.format(new Date());
+        return "BestMoments" + timestamp + ".jpg";
+    }
+
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode == RESULT_OK) {
+            if (requestCode == CAMERA_REQUEST) {
+                File imagePath = new File(getFilesDir(), "images/" + pictureName);
+                Uri imageUri = FileProvider.getUriForFile(getApplicationContext(), "com.cse40333.kthienem.lab2_kthienem.fileprovider", imagePath);
+
+                InputStream inputStream;
+                try {
+                    inputStream = getContentResolver().openInputStream(imageUri);
+
+                    Bitmap image = BitmapFactory.decodeStream(inputStream);
+                    ImageView imgView = (ImageView) findViewById(R.id.picture);
+                    imgView.setImageBitmap(image);
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
     }
 }
