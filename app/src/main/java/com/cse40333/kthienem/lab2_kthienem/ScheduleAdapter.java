@@ -16,9 +16,9 @@ import java.util.ArrayList;
  * Created by Kris on 2/8/2017.
  */
 
-public class ScheduleAdapter extends ArrayAdapter<Team> {
+public class ScheduleAdapter extends ArrayAdapter<Game> {
 
-    ScheduleAdapter (Context context, ArrayList<Team> schedule) {
+    ScheduleAdapter (Context context, ArrayList<Game> schedule) {
         super(context, R.layout.schedule_item, schedule);
     }
 
@@ -28,15 +28,23 @@ public class ScheduleAdapter extends ArrayAdapter<Team> {
         LayoutInflater scheduleInflater = LayoutInflater.from(getContext());
         View scheduleView = scheduleInflater.inflate(R.layout.schedule_item, parent, false);
 
-        Team matchItem = getItem(position);
+        Game matchItem = getItem(position);
         TextView teamName = (TextView) scheduleView.findViewById(R.id.teamName);
-        teamName.setText(matchItem.getTeamName());
 
         TextView gameDate = (TextView) scheduleView.findViewById(R.id.gameDate);
-        gameDate.setText(matchItem.getGameDate());
+        gameDate.setText(matchItem.getDate());
 
         ImageView teamLogo = (ImageView) scheduleView.findViewById(R.id.teamLogo);
-        String mDrawableName = matchItem.getTeamLogo();
+        String mDrawableName = "leprechaun";
+
+        if (matchItem.getType() == Game.gameType.HOME) {
+            teamName.setText(matchItem.getVisitor().getTeamName());
+            mDrawableName = matchItem.getVisitor().getTeamLogo();
+        } else if (matchItem.getType() == Game.gameType.AWAY) {
+            teamName.setText(matchItem.getHome().getTeamName());
+            mDrawableName = matchItem.getHome().getTeamLogo();
+        }
+
         int resID = getContext().getResources().getIdentifier(mDrawableName, "drawable", getContext().getPackageName());
         teamLogo.setImageResource(resID);
 
