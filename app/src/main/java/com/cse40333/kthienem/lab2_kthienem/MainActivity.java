@@ -1,12 +1,12 @@
 package com.cse40333.kthienem.lab2_kthienem;
 
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -22,14 +22,18 @@ import java.util.Random;
 
 public class MainActivity extends AppCompatActivity {
 
-    private ArrayList<String> homeScore = new ArrayList<>();
-    private ArrayList<String> awayScore = new ArrayList<>();
-    private Team ND = new Team("Fighting Irish", "notre_dame", "March 1", "Notre Dame", "(21-5)");
+//    private ArrayList<String> homeScore = new ArrayList<>();
+//    private ArrayList<String> awayScore = new ArrayList<>();
+//    private Team ND = new Team("Fighting Irish", "notre_dame", "March 1", "Notre Dame", "(21-5)");
+    private Team ND = new Team("Fighting Irish", "notre_dame", "Notre Dame", "(21-5)");
 
-    private ArrayList<Team> info = new ArrayList<>();
+
+    private ArrayList<Team> teams = new ArrayList<>();
+    private ArrayList<Game> games = new ArrayList<>();
     private ListAdapter scheduleAdapter;
     private ListView scheduleListView;
     private Toolbar mToolbar;
+    private DBHelper dbHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,19 +44,35 @@ public class MainActivity extends AppCompatActivity {
         setTitle("ND Athletics");
 
         MyCsvFileReader reader = new MyCsvFileReader(getApplicationContext());
-        info = reader.readCsvFile(R.raw.schedule);
+//        info = reader.readCsvFile(R.raw.schedule);
+        teams = reader.getTeams(R.raw.schedule);
+        games = reader.getGames(R.raw.schedule);
 
-        scheduleAdapter = new ScheduleAdapter(getBaseContext(), info);
+        scheduleAdapter = new ScheduleAdapter(getBaseContext(), games);
         scheduleListView = (ListView) findViewById(R.id.scheduleListView);
         scheduleListView.setAdapter(scheduleAdapter);
 
         Random r = new Random();
-        for (int i = 0; i < info.size(); i++) {
+        for (int i = 0; i < games.size(); i++) {
             int temp = r.nextInt(100);
-            homeScore.add(Integer.toString(temp));
+//            homeScore.add(Integer.toString(temp));
+            Game game = games.get(i);
+            game.setHomeScore(temp);
 
             temp = r.nextInt(100);
-            awayScore.add(Integer.toString(temp));
+//            awayScore.add(Integer.toString(temp));
+            game.setVisitorScore(temp);
+            }
+
+        dbHelper = new DBHelper(getApplicationContext());
+        dbHelper.onUpgrade(dbHelper.getWritableDatabase(), 1, 2);
+        for (Team team: teams) {
+            dbHelper.insertTeam(team);
+        }
+        dbHelper.insertTeam(ND);
+
+        for (Game game: games) {
+            dbHelper.insertGame(game, dbHelper.getTeamID(game.getHome()), dbHelper.getTeamID(game.getVisitor()));
         }
 
         AdapterView.OnItemClickListener itemClickListener = new AdapterView.OnItemClickListener() {
@@ -72,13 +92,20 @@ public class MainActivity extends AppCompatActivity {
     private Bundle addInfoToBundle(int id) {
         Bundle mBundle = new Bundle();
 
-        mBundle.putSerializable("team1", info.get(id));
-        mBundle.putSerializable("team2", ND);
+        /*
+        mBundle.putSerializable("team1", games.get(id).getHome());
+        mBundle.putSerializable("team2", games.get(id).getVisitor());
 
-        mBundle.putString("date", "Saturday, " + info.get(id).getGameDate() + ", 6:00 PM" );
+//        mBundle.putString("date", "Saturday, " + info.get(id).getGameDate() + ", 6:00 PM" );
+        mBundle.putString("date", "Saturday, " + games.get(id).getDate() + ", 6:00 PM" );
         mBundle.putString("location", "Purcell Pavilion at the Joyce Center, Notre Dame, Indiana");
-        mBundle.putString("score1", awayScore.get(id));
-        mBundle.putString("score2", homeScore.get(id));
+//        mBundle.putString("score1", awayScore.get(id));
+        mBundle.putString("score1", Integer.toString(games.get(id).getVisitorScore()));
+//        mBundle.putString("score2", homeScore.get(id));
+        mBundle.putString("score2", Integer.toString(games.get(id).getHomeScore()));
+        */
+
+        mBundle.putLong("game", id+1);
 
         return mBundle;
     }
@@ -130,9 +157,10 @@ public class MainActivity extends AppCompatActivity {
     public String gameSchedule() {
         StringBuilder gameString = new StringBuilder();
 
-        for (Team team: info) {
-            gameString.append(team.getTeamName() + ", ");
-            gameString.append(team.getGameDate() + ", ");
+//        for (Team team: teams) {
+        for (int i = 0; i < teams.size(); i++) {
+            gameString.append(teams.get(i).getTeamName() + ", ");
+            gameString.append(games.get(i).getDate() + ", ");
             gameString.append("Purcell Pavilion\n");
         }
         gameString.deleteCharAt(gameString.length()-1);

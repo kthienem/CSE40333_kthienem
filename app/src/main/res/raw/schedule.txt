@@ -1,8 +1,8 @@
-Buckeyes,ohio_state,Feb 9,Ohio State,(20-7)
-Seminoles,fsu,Feb 11,Florida State,(21-6)
-Demon Deacons,wake_forest,Feb 12,Wake Forest,(19-8)
-Eagles,boston_college,Feb 14,Boston College,(15-12)
-Wolf Pack,ncstate,Feb 18,North Carolina State,(14-13)
-Yellow Jackets,georgia_tech,Feb 26,Georgia Tech,(26-1)
-Cavaliers,virginia,March 4,North Virginia,(20-7)
-Cougars,fsu,March 8,Chicago State,(6-21)
+Buckeyes,ohio_state,Feb 9,Ohio State,(20-7),home
+Seminoles,fsu,Feb 11,Florida State,(21-6),away
+Demon Deacons,wake_forest,Feb 12,Wake Forest,(19-8),home
+Eagles,boston_college,Feb 14,Boston College,(15-12),home
+Wolf Pack,ncstate,Feb 18,North Carolina State,(14-13),away
+Yellow Jackets,georgia_tech,Feb 26,Georgia Tech,(26-1),home
+Cavaliers,virginia,March 4,North Virginia,(20-7),home
+Cougars,fsu,March 8,Chicago State,(6-21),away

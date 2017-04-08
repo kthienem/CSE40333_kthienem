@@ -44,22 +44,31 @@ public class DetailActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         Bundle bundle = intent.getExtras();
+        Long gameID = bundle.getLong("game");
+        DBHelper dbHelper = new DBHelper(getApplicationContext());
+        Game game = dbHelper.getGame(gameID);
 
         //Set info of team 1
-        Team team1Info = (Team) bundle.getSerializable("team1");
-        String team1Score = bundle.getString("score1");
+//        Team team1Info = (Team) bundle.getSerializable("team1");
+//        String team1Score = bundle.getString("score1");
+        Team team1Info = game.getHome();
+        String team1Score = Integer.toString(game.getHomeScore());
         setTeam1Info(team1Info, team1Score);
 
         //Set info of team 2
-        Team team2Info = (Team) bundle.getSerializable("team2");
-        String team2Score = bundle.getString("score2");
+//        Team team2Info = (Team) bundle.getSerializable("team2");
+//        String team2Score = bundle.getString("score2");
+        Team team2Info = game.getVisitor();
+        String team2Score = Integer.toString(game.getVisitorScore());
         setTeam2Info(team2Info, team2Score);
 
         TextView date = (TextView) findViewById(R.id.date);
-        date.setText(bundle.getString("date"));
+//        date.setText(bundle.getString("date"));
+        date.setText(game.getDate());
 
         TextView location = (TextView) findViewById(R.id.location);
-        location.setText(bundle.getString("location"));
+//        location.setText(bundle.getString("location"));
+        location.setText(game.getLocation());
 
         View.OnClickListener cameraButtonClickListener = new View.OnClickListener() {
             @Override
