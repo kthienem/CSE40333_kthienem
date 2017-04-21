@@ -137,7 +137,7 @@ public class GalleryActivity extends AppCompatActivity {
         int[] items = new int[] {R.id.game_image};
 
         Cursor cursor = dbHelper.getSelectEntries(DBHelper.TABLE_IMAGES, fields, where, args, DBHelper.IMAGE_COLS[0] + " DESC");
-        Log.d("Debug", Integer.toString(cursor.getCount()));
+
         if (cursor != null) {
             SimpleCursorAdapter galleryCursorAdapter = new SimpleCursorAdapter(this, R.layout.image_layout, cursor, fields, items, 0);
 
