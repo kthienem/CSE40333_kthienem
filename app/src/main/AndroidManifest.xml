@@ -17,6 +17,7 @@
         </activity>
         <activity android:name=".MainActivity"/>
         <activity android:name=".DetailActivity"/>
+        <activity android:name=".GalleryActivity"/>
 
         <provider
             android:authorities="com.cse40333.kthienem.lab2_kthienem.fileprovider"
