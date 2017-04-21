@@ -45,8 +45,8 @@ public class DetailActivity extends AppCompatActivity {
         Intent intent = getIntent();
         Bundle bundle = intent.getExtras();
         Long gameID = bundle.getLong("game");
-        DBHelper dbHelper = new DBHelper(getApplicationContext());
-        Game game = dbHelper.getGame(gameID);
+        final DBHelper dbHelper = new DBHelper(getApplicationContext());
+        final Game game = dbHelper.getGame(gameID);
 
         //Set info of team 1
 //        Team team1Info = (Team) bundle.getSerializable("team1");
@@ -73,18 +73,27 @@ public class DetailActivity extends AppCompatActivity {
         View.OnClickListener cameraButtonClickListener = new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+//                Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+//
+//                File imagePath = new File(getFilesDir(), "images");
+//                imagePath.mkdir();
+//                pictureName = getPictureName();
+//                File imageFile = new File(imagePath, pictureName);
+//                Uri contentUri = FileProvider.getUriForFile(getApplicationContext(), "com.cse40333.kthienem.lab2_kthienem.fileprovider", imageFile);
+//                getApplicationContext().grantUriPermission(getPackageName(), contentUri, Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+//
+//                cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, contentUri);
+//                getApplicationContext().grantUriPermission("com.cse40333.kthienem.lab2_kthienem", contentUri, Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+//                startActivityForResult(cameraIntent, CAMERA_REQUEST);
 
-                File imagePath = new File(getFilesDir(), "images");
-                imagePath.mkdir();
-                pictureName = getPictureName();
-                File imageFile = new File(imagePath, pictureName);
-                Uri contentUri = FileProvider.getUriForFile(getApplicationContext(), "com.cse40333.kthienem.lab2_kthienem.fileprovider", imageFile);
-                getApplicationContext().grantUriPermission(getPackageName(), contentUri, Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+                Intent intent = new Intent(getApplicationContext(), GalleryActivity.class);
+                if(game.getType() == Game.gameType.HOME) {
+                    intent.putExtra("id", dbHelper.getTeamID(game.getVisitor()));
+                } else if (game.getType() == Game.gameType.AWAY) {
+                    intent.putExtra("id", dbHelper.getTeamID(game.getHome()));
+                }
 
-                cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, contentUri);
-                getApplicationContext().grantUriPermission("com.cse40333.kthienem.lab2_kthienem", contentUri, Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-                startActivityForResult(cameraIntent, CAMERA_REQUEST);
+                startActivity(intent);
             }
         };
 

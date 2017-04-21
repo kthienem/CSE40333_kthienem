@@ -141,7 +141,7 @@
             android:id="@+id/picture" />
 
         <Button
-            android:text="@string/camera_button_text"
+            android:text="@string/gallery_button_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/cameraButton"

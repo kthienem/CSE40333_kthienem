@@ -17,10 +17,12 @@ public class DBHelper extends SQLiteOpenHelper {
 
     private static String DATABASE_NAME = "basketball.db";
     private static int DATABASE_VERSION = 1;
-    private static String TABLE_TEAMS = "Teams";
-    private static String TABLE_GAMES = "Games";
-    private static String[] TEAM_COLS = {"id", "name", "logo", "school", "record"};
-    private static String[] GAME_COLS = {"id", "date", "location", "home_team", "home_score", "away_team", "away_score"};
+    public static String TABLE_TEAMS = "Teams";
+    public static String TABLE_GAMES = "Games";
+    public static String TABLE_IMAGES = "Images";
+    public static String[] TEAM_COLS = {"_id", "name", "logo", "school", "record"};
+    public static String[] GAME_COLS = {"_id", "date", "location", "home_team", "home_score", "away_team", "away_score"};
+    public static String[] IMAGE_COLS = {"_id", "team_id", "image", "uri"};
     private SQLiteDatabase mDB;
 
     public DBHelper (Context context) {
@@ -46,12 +48,20 @@ public class DBHelper extends SQLiteOpenHelper {
                 + TEAM_COLS[3] + " TEXT, "
                 + TEAM_COLS[4] + " TEXT "
                 + ");");
+
+        db.execSQL("CREATE TABLE " + TABLE_IMAGES + " ("
+                + IMAGE_COLS[0] + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+                + IMAGE_COLS[1] + " INTEGER, "
+                + IMAGE_COLS[2] + " BLOB, "
+                + IMAGE_COLS[3] + " TEXT "
+                + ");");
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE if exists " + TABLE_GAMES);
         db.execSQL("DROP TABLE if exists " + TABLE_TEAMS);
+        db.execSQL("DROP TABLE if exists " + TABLE_IMAGES);
         onCreate(db);
     }
 
@@ -233,5 +243,38 @@ public class DBHelper extends SQLiteOpenHelper {
         mDB.close();
 
         return team;
+    }
+
+    public long insertImage(long teamID, byte[] image, String uri) {
+        long ret = -1;
+
+        mDB = getWritableDatabase();
+
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(IMAGE_COLS[1], teamID);
+        contentValues.put(IMAGE_COLS[2], image);
+        contentValues.put(IMAGE_COLS[3], uri);
+
+        ret = mDB.insert(TABLE_IMAGES, null, contentValues);
+        mDB.close();
+
+        if (ret > 0) {
+            Log.d("Image_Insert", "Successfully inserted");
+        } else {
+            Log.d("Image_Insert", "Unsuccessful insert");
+        }
+
+        return ret;
+    }
+
+    public Cursor getSelectEntries(String tblName, String[] columns, String where, String[] args, String orderBy) {
+        SQLiteDatabase db = getReadableDatabase();
+
+        Cursor cursor = db.query(tblName, columns, where, args, null, null, orderBy);
+        if(cursor != null) {
+            cursor.moveToFirst();
+        }
+
+        return cursor;
     }
 }

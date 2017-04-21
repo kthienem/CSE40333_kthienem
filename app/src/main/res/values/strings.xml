@@ -19,5 +19,5 @@
     <string name="team_score_default">0</string>
     <string name="score_spacer"> - </string>
     <string name="game_time_default">Final</string>
-    <string name="camera_button_text">Camera</string>
+    <string name="gallery_button_text">Gallery</string>
 </resources>
