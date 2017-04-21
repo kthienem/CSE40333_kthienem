@@ -144,12 +144,6 @@ public class DBHelper extends SQLiteOpenHelper {
         return id;
     }
 
-    /*public long getGame(int id) {
-        Game game;
-
-        return game;
-    }*/
-
     public String getTeams() {
         StringBuilder sb = new StringBuilder();
         mDB = getReadableDatabase();

@@ -22,9 +22,6 @@ import java.util.Random;
 
 public class MainActivity extends AppCompatActivity {
 
-//    private ArrayList<String> homeScore = new ArrayList<>();
-//    private ArrayList<String> awayScore = new ArrayList<>();
-//    private Team ND = new Team("Fighting Irish", "notre_dame", "March 1", "Notre Dame", "(21-5)");
     private Team ND = new Team("Fighting Irish", "notre_dame", "Notre Dame", "(21-5)");
 
 
@@ -44,7 +41,6 @@ public class MainActivity extends AppCompatActivity {
         setTitle("ND Athletics");
 
         MyCsvFileReader reader = new MyCsvFileReader(getApplicationContext());
-//        info = reader.readCsvFile(R.raw.schedule);
         teams = reader.getTeams(R.raw.schedule);
         games = reader.getGames(R.raw.schedule);
 
@@ -55,12 +51,10 @@ public class MainActivity extends AppCompatActivity {
         Random r = new Random();
         for (int i = 0; i < games.size(); i++) {
             int temp = r.nextInt(100);
-//            homeScore.add(Integer.toString(temp));
             Game game = games.get(i);
             game.setHomeScore(temp);
 
             temp = r.nextInt(100);
-//            awayScore.add(Integer.toString(temp));
             game.setVisitorScore(temp);
             }
 
@@ -91,20 +85,6 @@ public class MainActivity extends AppCompatActivity {
 
     private Bundle addInfoToBundle(int id) {
         Bundle mBundle = new Bundle();
-
-        /*
-        mBundle.putSerializable("team1", games.get(id).getHome());
-        mBundle.putSerializable("team2", games.get(id).getVisitor());
-
-//        mBundle.putString("date", "Saturday, " + info.get(id).getGameDate() + ", 6:00 PM" );
-        mBundle.putString("date", "Saturday, " + games.get(id).getDate() + ", 6:00 PM" );
-        mBundle.putString("location", "Purcell Pavilion at the Joyce Center, Notre Dame, Indiana");
-//        mBundle.putString("score1", awayScore.get(id));
-        mBundle.putString("score1", Integer.toString(games.get(id).getVisitorScore()));
-//        mBundle.putString("score2", homeScore.get(id));
-        mBundle.putString("score2", Integer.toString(games.get(id).getHomeScore()));
-        */
-
         mBundle.putLong("game", id+1);
 
         return mBundle;
@@ -157,7 +137,6 @@ public class MainActivity extends AppCompatActivity {
     public String gameSchedule() {
         StringBuilder gameString = new StringBuilder();
 
-//        for (Team team: teams) {
         for (int i = 0; i < teams.size(); i++) {
             gameString.append(teams.get(i).getTeamName() + ", ");
             gameString.append(games.get(i).getDate() + ", ");
